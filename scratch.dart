@@ -1,5 +1,3 @@
-import 'dart:io';
-
 // VIDEO 151
 void main() {
   performTasks();
@@ -18,9 +16,9 @@ void task1() {
 
 //video 150 -- futures are like promises
 Future<String> task2() async {
-  Duration threeSeconds = Duration(seconds: 3);
+  Duration threeSec = Duration(seconds: 3);
   String result;
-  await Future.delayed(threeSeconds, () {
+  await Future.delayed(threeSec, () {
     result = 'task 2 data';
     print('Task 2 complete');
   });
