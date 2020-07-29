@@ -1,6 +1,9 @@
 import 'package:clima/services/location.dart';
 import 'package:flutter/material.dart';
 //
+import 'package:clima/services/networking.dart';
+
+const apiKey = '112203528720759b20c51b5ff4ce5b90';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -10,11 +13,14 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
+  double latitude;
+  double longitude;
+
   @override
   void initState() {
     super.initState();
     print('initState called');
-    getLocation();
+    getLocationData();
   }
 
   @override
@@ -23,18 +29,24 @@ class _LoadingScreenState extends State<LoadingScreen> {
     print('deactivate called');
   }
 
-  void getLocation() async {
+  void getLocationData() async {
     Location location = Location();
     await location.getCurrentLocation();
-    print(location.latitude);
-    print(location.longitude);
+    latitude = location.latitude;
+    longitude = location.longitude;
+
+    NetworkHelper networkHelper = NetworkHelper(
+        'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey');
+    var weatherData = await networkHelper.getData();
   }
 
   @override
   Widget build(BuildContext context) {
     print(
         'build called -- but do not put a lot of stuff here b/c it makes it slow');
+
     return Scaffold(
+
 //      body: Center(
 //        child: RaisedButton(
 //          onPressed: () {
