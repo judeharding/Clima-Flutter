@@ -8,6 +8,7 @@ class NetworkHelper {
 
   Future getData() async {
     http.Response response = await http.get(url);
+    print('RESPONSE BODY FROM NETWORKING.DART');
     print(response.body);
 
     if (response.statusCode == 200) {

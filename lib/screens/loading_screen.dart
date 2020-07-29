@@ -1,7 +1,9 @@
 import 'package:clima/services/location.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 //
 import 'package:clima/services/networking.dart';
+import 'package:clima/screens/location_screen.dart';
 
 const apiKey = '112203528720759b20c51b5ff4ce5b90';
 
@@ -19,14 +21,14 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   void initState() {
     super.initState();
-    print('initState called');
+    print('INITSTATE CALLED ON LOADING SCREEN');
     getLocationData();
   }
 
   @override
   void deactivate() {
     super.deactivate();
-    print('deactivate called');
+    print('DEACTIVATE CALLED ON LOADING SCREEN');
   }
 
   void getLocationData() async {
@@ -36,26 +38,30 @@ class _LoadingScreenState extends State<LoadingScreen> {
     longitude = location.longitude;
 
     NetworkHelper networkHelper = NetworkHelper(
-        'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey');
+        'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey&units=imperial');
+    //OR
+//    'https://api.openweathermap.org/data/2.5/weather?lat={$location.latitude&}lon={$location.longitude}&appid=$apiKey&units=imperial');
     var weatherData = await networkHelper.getData();
+
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      //PASSING DATA FROM THE LOCATION SCREEN TO THE LOADING SCREEN
+      return LocationScreen(locationWeather: weatherData);
+    }));
   }
 
   @override
   Widget build(BuildContext context) {
     print(
-        'build called -- but do not put a lot of stuff here b/c it makes it slow');
+        'BUILD CALLED ON LOADING SCREEN -- but do not put a lot of stuff here b/c it makes it slow');
 
     return Scaffold(
-
-//      body: Center(
-//        child: RaisedButton(
-//          onPressed: () {
-//            getLocation();
-//          },
-//          child: Text('Get Location'),
-//        ),
-//      ),
-        );
+      body: Center(
+        child: SpinKitRotatingCircle(
+          color: Colors.white,
+          size: 100.0,
+        ),
+      ),
+    );
   }
 }
 
